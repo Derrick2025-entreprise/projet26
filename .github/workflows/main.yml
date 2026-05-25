@@ -50,6 +50,7 @@ jobs:
         fail_ci_if_error: false
     
     - name: Analyse SonarCloud
+      if: false  # Désactivé temporairement - à configurer avec votre organisation SonarCloud
       uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
