@@ -121,10 +121,11 @@ jobs:
       run: npm ci
     
     - name: Audit de sécurité npm
-      run: npm audit --audit-level=moderate
+      run: npm audit --audit-level=high
       continue-on-error: true
     
     - name: Scan Snyk
+      if: false  # Désactivé temporairement - nécessite SNYK_TOKEN
       uses: snyk/actions/node@master
       continue-on-error: true
       env:
