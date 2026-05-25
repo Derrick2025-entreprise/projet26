@@ -1,5 +1,5 @@
 # Utiliser une image Node.js officielle
-FROM node:18-alpine
+FROM node:22-alpine
 
 # Définir le répertoire de travail
 WORKDIR /app
@@ -10,8 +10,15 @@ COPY package*.json ./
 # Installer les dépendances
 RUN npm ci --only=production
 
-# Copier le reste des fichiers de l'application
-COPY . .
+# Copier uniquement les fichiers nécessaires (évite de copier .env, .git, etc.)
+COPY controllers ./controllers
+COPY database ./database
+COPY middleware ./middleware
+COPY public ./public
+COPY routes ./routes
+COPY services ./services
+COPY views ./views
+COPY app.js ./
 
 # Exposer le port de l'application
 EXPOSE 3000
@@ -29,4 +36,4 @@ RUN addgroup -g 1001 -S nodejs && \
 USER nodejs
 
 # Commande pour démarrer l'application
-CMD ["node", "server.js"]
+CMD ["node", "--experimental-sqlite", "app.js"]
