@@ -66,7 +66,7 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
     needs: test
-    if: github.event_name == 'push'
+    if: false  # Désactivé temporairement - problème de secrets Docker Hub
     
     steps:
     - name: Checkout du code
