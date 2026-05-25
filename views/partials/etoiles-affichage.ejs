@@ -1,0 +1,18 @@
+<%#
+  Affichage en lecture seule des étoiles (moyenne).
+  Variables : noteMoyenne (number), nbNotations (number, optionnel)
+%>
+<% const moy = Number(noteMoyenne) || 0; const nb = Number(nbNotations) || 0; const pleines = Math.round(moy); %>
+<div class="etoiles-lecture" aria-label="<%= moy > 0 ? moy + ' su 5 stelle' : 'Nessuna valutazione' %>">
+  <% for (let i = 1; i <= 5; i++) { %>
+    <span class="etoile <%= i <= pleines && moy > 0 ? 'etoile-pleine' : 'etoile-vide' %>" aria-hidden="true"><%= i <= pleines && moy > 0 ? '★' : '☆' %></span>
+  <% } %>
+  <% if (nb > 0) { %>
+    <span class="etoiles-meta">
+      <strong><%= moy %></strong>/5
+      <span class="text-muted">(<%= nb %>)</span>
+    </span>
+  <% } else { %>
+    <span class="etoiles-meta text-muted">Nessuna valutazione</span>
+  <% } %>
+</div>

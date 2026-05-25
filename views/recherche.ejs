@@ -1,0 +1,80 @@
+<% titre = "Ricerca"; %>
+<%- include('layout/header') %>
+
+<section aria-labelledby="titre-recherche">
+  <h1 id="titre-recherche" class="mb-2">Risultati della ricerca</h1>
+
+  <search>
+    <form class="mb-4" action="/recherche" method="GET" role="search">
+      <div class="input-group">
+        <label for="q" class="visually-hidden">Parola chiave</label>
+        <input type="search" class="form-control" id="q" name="q"
+               value="<%= motCle %>" placeholder="Cerca una ricetta..."
+               aria-label="Cerca una ricetta">
+        <button class="btn btn-primary" type="submit">Cerca</button>
+      </div>
+    </form>
+  </search>
+
+  <% if (motCle) { %>
+    <p class="text-muted mb-3" aria-live="polite">
+      <strong><%= recettes.length %></strong>
+      risultat<%= recettes.length !== 1 ? 'i' : 'o' %>
+      per « <em><%= motCle %></em> »
+    </p>
+  <% } %>
+
+  <% if (recettes.length === 0) { %>
+    <div class="text-center py-5 text-muted">
+      <p class="fs-5">Nessuna ricetta trovata.</p>
+      <p>Prova un'altra parola chiave o <a href="/">sfoglia tutte le ricette</a>.</p>
+    </div>
+  <% } else { %>
+    <ol class="row row-cols-1 row-cols-md-3 g-4 list-unstyled" aria-label="Risultati">
+      <% recettes.forEach(recette => { %>
+        <li class="col">
+          <article class="card h-100">
+            <% if (recette.image_url) { %>
+              <img src="<%= recette.image_url %>" class="card-img-top"
+                   alt="Foto di <%= recette.titre %>">
+            <% } else { %>
+              <div class="recipe-placeholder" aria-hidden="true">🍴</div>
+            <% } %>
+            <div class="card-body">
+              <h2 class="card-title h5"><%= recette.titre %></h2>
+              <p class="card-text text-muted small mb-1">Di <strong><%= recette.auteur %></strong></p>
+              <% if (recette.description) { %>
+                <p class="card-text">
+                  <%= recette.description.substring(0, 100) %><%= recette.description.length > 100 ? '…' : '' %>
+                </p>
+              <% } %>
+            </div>
+            <div class="card-footer card-footer-recette">
+              <%- include('partials/etoiles-carte', {
+                recetteId: recette.id,
+                noteMoyenne: recette.note_moyenne,
+                nbNotations: recette.nb_notations
+              }) %>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <a href="/recettes/<%= recette.id %>" class="btn btn-outline-primary btn-sm">
+                  Vedi la ricetta
+                  <span class="visually-hidden">: <%= recette.titre %></span>
+                </a>
+                <% if (utilisateur) { %>
+                  <button type="button" class="btn btn-favori"
+                          data-recette-id="<%= recette.id %>"
+                          aria-label="Aggiungi ai preferiti"
+                          aria-pressed="false">
+                    🤍
+                  </button>
+                <% } %>
+              </div>
+            </div>
+          </article>
+        </li>
+      <% }); %>
+    </ol>
+  <% } %>
+</section>
+
+<%- include('layout/footer') %>

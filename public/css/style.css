@@ -1,0 +1,549 @@
+/* RecetteApp — styles personnalisés */
+
+/* =========================================================
+   VARIABLES & BASE
+   ========================================================= */
+
+:root {
+  --couleur-primaire:  #e63946;
+  --couleur-secondaire:#457b9d;
+  --couleur-accent:    #f4a261;
+  --couleur-fond:      #f8f5f0;
+  --couleur-carte:     #ffffff;
+  --rayon:             0.75rem;
+  --ombre:             0 4px 20px rgba(0,0,0,0.08);
+  --ombre-hover:       0 8px 30px rgba(0,0,0,0.15);
+  --transition:        0.2s ease;
+}
+
+body {
+  background-color: var(--couleur-fond);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #2d2d2d;
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.navbar-brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  transition: color var(--transition);
+}
+
+.navbar-nav .nav-link.active {
+  font-weight: 700;
+  color: var(--couleur-accent) !important;
+  text-decoration: none;
+}
+
+/* =========================================================
+   HERO SECTION (accueil)
+   ========================================================= */
+
+.hero {
+  background: linear-gradient(135deg, #e63946 0%, #c1121f 50%, #457b9d 100%);
+  border-radius: var(--rayon);
+  padding: 3rem 2rem;
+  margin-bottom: 2.5rem;
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '🍝🍕🥗🍜🥘';
+  position: absolute;
+  font-size: 4rem;
+  opacity: 0.08;
+  top: -10px;
+  left: 0;
+  right: 0;
+  letter-spacing: 2rem;
+  pointer-events: none;
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   CARTES RECETTES
+   ========================================================= */
+
+.card {
+  border: none;
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre);
+  transition: transform var(--transition), box-shadow var(--transition);
+  background: var(--couleur-carte);
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--ombre-hover);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.04);
+}
+
+.card-title {
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.card-footer {
+  background: transparent;
+  border-top: 1px solid #f0ece6;
+}
+
+.recipe-placeholder {
+  height: 200px;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+/* =========================================================
+   BOUTON FAVORI
+   ========================================================= */
+
+.btn-favori {
+  background: none;
+  border: 2px solid #dee2e6;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform var(--transition), border-color var(--transition), background var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-favori:hover {
+  transform: scale(1.2);
+  border-color: var(--couleur-primaire);
+  background: #fff0f0;
+}
+
+.btn-favori-actif {
+  border-color: var(--couleur-primaire);
+  background: #ffe0e0;
+  box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.25);
+}
+
+.btn-favori-lg {
+  width: 44px;
+  height: 44px;
+  font-size: 1.3rem;
+}
+
+.btn-favori-pulse {
+  animation: pulse-favori 0.4s ease;
+}
+
+@keyframes pulse-favori {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.btn-favori-chargement {
+  opacity: 0.5;
+}
+
+.carte-suppression {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* =========================================================
+   AUTOCOMPLETE
+   ========================================================= */
+
+.autocomplete-liste {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-hover);
+  z-index: 1050;
+  max-height: 360px;
+  overflow-y: auto;
+  display: none;
+  border: 1px solid #e9ecef;
+}
+
+.autocomplete-liste.autocomplete-ouverte {
+  display: block;
+  animation: fadeDown 0.15s ease;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background var(--transition);
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item-actif {
+  background: #f8f5f0;
+}
+
+.autocomplete-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f0ece6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.autocomplete-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.autocomplete-texte {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.autocomplete-titre {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1a1a2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.autocomplete-titre mark {
+  background: #fff3cd;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.autocomplete-auteur {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.autocomplete-tous {
+  font-size: 0.85rem;
+  color: var(--couleur-secondaire);
+  font-weight: 500;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.autocomplete-tous:hover {
+  background: #e9ecef;
+}
+
+/* =========================================================
+   RECETTE DÉTAIL
+   ========================================================= */
+
+.recipe-detail-img {
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: var(--rayon);
+}
+
+.ingredients-list,
+.steps-list {
+  white-space: pre-line;
+  font-family: inherit;
+  font-size: 1rem;
+  border-left: 4px solid var(--couleur-accent);
+  border-radius: 0 var(--rayon) var(--rayon) 0;
+}
+
+/* =========================================================
+   INDICATEUR DE CHARGEMENT
+   ========================================================= */
+
+#page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--couleur-primaire), var(--couleur-accent));
+  transition: width 0.3s ease, opacity 0.3s ease;
+  z-index: 9999;
+  opacity: 0;
+}
+
+#page-loader.active {
+  width: 70%;
+  opacity: 1;
+}
+
+body.is-loading #page-loader {
+  width: 90%;
+}
+
+/* =========================================================
+   FORMULAIRES
+   ========================================================= */
+
+.form-control:focus {
+  border-color: var(--couleur-secondaire);
+  box-shadow: 0 0 0 0.2rem rgba(69,123,157,0.25);
+}
+
+.btn-primary {
+  background: var(--couleur-primaire);
+  border-color: var(--couleur-primaire);
+}
+
+.btn-primary:hover {
+  background: #c1121f;
+  border-color: #c1121f;
+}
+
+/* =========================================================
+   TOGGLE MOT DE PASSE
+   ========================================================= */
+
+.btn-toggle-pwd {
+  border-left: 0;
+}
+
+.btn-toggle-pwd.active {
+  background-color: #e9ecef;
+}
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.page-link {
+  color: var(--couleur-secondaire);
+  border-radius: 6px !important;
+  margin: 0 2px;
+}
+
+.page-item.active .page-link {
+  background: var(--couleur-primaire);
+  border-color: var(--couleur-primaire);
+}
+
+/* =========================================================
+   NAVBAR — lien actif
+   ========================================================= */
+
+.navbar-nav .nav-link.active {
+  font-weight: 700;
+  color: var(--couleur-accent) !important;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  margin-top: auto;
+}
+
+/* =========================================================
+   WIDGET HEURE / DATE / MÉTÉO (Rome, Italie)
+   ========================================================= */
+
+.widget-italie {
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.widget-chargement { opacity: 0.5; }
+.widget-ok         { opacity: 1; }
+.widget-erreur     { opacity: 0.4; }
+.widget-separateur { font-size: 0.7rem; }
+
+/* =========================================================
+   ANIMATIONS D'ENTRÉE DES CARTES
+   ========================================================= */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  animation: fadeInUp 0.3s ease both;
+}
+
+.row > li:nth-child(1) .card { animation-delay: 0.05s; }
+.row > li:nth-child(2) .card { animation-delay: 0.10s; }
+.row > li:nth-child(3) .card { animation-delay: 0.15s; }
+.row > li:nth-child(4) .card { animation-delay: 0.20s; }
+.row > li:nth-child(5) .card { animation-delay: 0.25s; }
+.row > li:nth-child(6) .card { animation-delay: 0.30s; }
+
+/* =========================================================
+   PAGE FAVORIS
+   ========================================================= */
+
+.card-favori {
+  border-left: 4px solid var(--couleur-primaire);
+}
+
+/* =========================================================
+   NOTATIONS (ÉTOILES)
+   ========================================================= */
+
+.etoiles-lecture,
+.etoiles-interactives {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-wrap: wrap;
+}
+
+.etoile {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.etoile-vide {
+  color: #adb5bd;
+}
+
+.etoile-pleine {
+  color: #f4a261;
+}
+
+.etoiles-meta {
+  font-size: 0.8rem;
+  margin-left: 0.35rem;
+}
+
+.etoile-btn {
+  background: none;
+  border: none;
+  padding: 0 0.1rem;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--transition), transform var(--transition);
+}
+
+.etoile-btn.etoile-vide {
+  color: #adb5bd;
+}
+
+.etoile-btn.etoile-active,
+.etoile-btn:hover.etoile-active {
+  color: #f4a261;
+  transform: scale(1.15);
+}
+
+.etoiles-carte-btns .etoile-btn {
+  font-size: 1.5rem;
+}
+
+.card-footer-recette {
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0ece6;
+}
+
+.etoiles-carte {
+  width: 100%;
+}
+
+.etoiles-carte-resume {
+  min-height: 1.1rem;
+  margin-top: 0.15rem;
+}
+
+.etoiles-carte-ok .etoiles-carte-btns {
+  animation: pulse-etoiles 0.5s ease;
+}
+
+@keyframes pulse-etoiles {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.notation-section {
+  background: var(--couleur-carte);
+  border-radius: var(--rayon);
+  padding: 1.25rem;
+  box-shadow: var(--ombre);
+}
+
+.liste-avis .avis-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0ece6;
+}
+
+.liste-avis .avis-item:last-child {
+  border-bottom: none;
+}
+
+.avis-etoiles {
+  color: #f4a261;
+  font-size: 0.95rem;
+  letter-spacing: 0.05rem;
+  white-space: nowrap;
+}

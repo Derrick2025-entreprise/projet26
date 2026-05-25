@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof titre !== 'undefined' ? titre : 'Ricette' %> — RicetteApp</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Navigazione principale">
+      <div class="container">
+        <a class="navbar-brand" href="/">🍽️ RicetteApp</a>
+
+        <%# Widget ora/data/meteo Roma %>
+        <div id="widget-italie" class="widget-italie d-none d-md-flex align-items-center gap-2 me-3" aria-label="Ora e meteo a Roma">
+          <span class="widget-date text-light small"></span>
+          <span class="widget-separateur text-secondary">|</span>
+          <span class="widget-heure text-light fw-bold"></span>
+          <span class="widget-separateur text-secondary">|</span>
+          <span class="widget-meteo widget-chargement text-light small" title="Caricamento meteo Roma...">🌡️ …</span>
+          <span class="text-secondary small">🇮🇹</span>
+        </div>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navMenu"
+                aria-controls="navMenu" aria-expanded="false" aria-label="Apri il menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav me-auto" role="list">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <% if (utilisateur) { %>
+              <li class="nav-item"><a class="nav-link" href="/recettes/nouvelle">Nuova ricetta</a></li>
+              <li class="nav-item"><a class="nav-link" href="/favoris">❤️ Preferiti</a></li>
+            <% } %>
+          </ul>
+          <search>
+            <form class="d-flex me-3 position-relative" action="/recherche" method="GET" role="search" id="form-recherche-nav">
+              <label for="nav-search" class="visually-hidden">Cerca una ricetta</label>
+              <input class="form-control me-2" type="search" id="nav-search" name="q"
+                     placeholder="Cerca..." aria-label="Cerca"
+                     autocomplete="off" aria-autocomplete="list" aria-controls="autocomplete-liste">
+              <button class="btn btn-outline-light" type="submit">Cerca</button>
+              <ul id="autocomplete-liste" class="autocomplete-liste list-unstyled" role="listbox" aria-label="Suggerimenti"></ul>
+            </form>
+          </search>
+          <ul class="navbar-nav" role="list">
+            <% if (utilisateur) { %>
+              <li class="nav-item">
+                <span class="navbar-text me-3 text-light">👤 <%= utilisateur.username %></span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/deconnexion">Esci</a>
+              </li>
+            <% } else { %>
+              <li class="nav-item"><a class="nav-link" href="/connexion">Accedi</a></li>
+              <li class="nav-item"><a class="nav-link" href="/inscription">Registrati</a></li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="container my-4" id="main-content">

@@ -1,0 +1,31 @@
+<% titre = "Accedi"; %>
+<%- include('layout/header') %>
+
+<section aria-labelledby="titre-connexion">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <h1 id="titre-connexion" class="mb-4">Accedi al tuo account</h1>
+
+      <% if (erreur) { %>
+        <div class="alert alert-danger" role="alert" aria-live="assertive"><%= erreur %></div>
+      <% } %>
+
+      <form method="POST" action="/connexion" novalidate>
+        <div class="mb-3">
+          <label for="email" class="form-label">Indirizzo email</label>
+          <input type="email" class="form-control" id="email" name="email"
+                 required aria-required="true" autofocus autocomplete="email">
+        </div>
+        <div class="mb-3">
+          <label for="mot_de_passe" class="form-label">Password</label>
+          <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe"
+                 required aria-required="true" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Accedi</button>
+      </form>
+      <p class="mt-3 text-center">Non hai un account? <a href="/inscription">Registrati</a></p>
+    </div>
+  </div>
+</section>
+
+<%- include('layout/footer') %>

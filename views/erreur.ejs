@@ -1,0 +1,10 @@
+<% titre = "Errore " + code; %>
+<%- include('layout/header') %>
+
+<section class="text-center py-5" aria-labelledby="titre-erreur">
+  <h1 id="titre-erreur" class="display-1 text-muted"><%= code %></h1>
+  <p class="lead"><%= message %></p>
+  <a href="/" class="btn btn-primary">Torna alla home</a>
+</section>
+
+<%- include('layout/footer') %>

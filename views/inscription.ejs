@@ -1,0 +1,44 @@
+<% titre = "Registrazione"; %>
+<%- include('layout/header') %>
+
+<section aria-labelledby="titre-inscription">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1 id="titre-inscription" class="mb-4">Crea un account</h1>
+
+      <% if (erreurs && erreurs.length > 0) { %>
+        <div class="alert alert-danger" role="alert" aria-live="assertive">
+          <ul class="mb-0">
+            <% erreurs.forEach(e => { %><li><%= e %></li><% }); %>
+          </ul>
+        </div>
+      <% } %>
+
+      <form method="POST" action="/inscription" novalidate>
+        <div class="mb-3">
+          <label for="username" class="form-label">Nome utente</label>
+          <input type="text" class="form-control" id="username" name="username"
+                 value="<%= valeurs && valeurs.username ? valeurs.username : '' %>"
+                 required aria-required="true" autocomplete="username">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Indirizzo email</label>
+          <input type="email" class="form-control" id="email" name="email"
+                 value="<%= valeurs && valeurs.email ? valeurs.email : '' %>"
+                 required aria-required="true" autocomplete="email">
+        </div>
+        <div class="mb-3">
+          <label for="mot_de_passe" class="form-label">Password</label>
+          <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe"
+                 minlength="6" required aria-required="true"
+                 aria-describedby="mdp-aide" autocomplete="new-password">
+          <p id="mdp-aide" class="form-text">Minimo 6 caratteri.</p>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Registrati</button>
+      </form>
+      <p class="mt-3 text-center">Hai già un account? <a href="/connexion">Accedi</a></p>
+    </div>
+  </div>
+</section>
+
+<%- include('layout/footer') %>

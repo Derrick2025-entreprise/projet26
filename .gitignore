@@ -1,0 +1,9 @@
+node_modules/
+.env
+
+# Fichiers WAL SQLite (générés automatiquement)
+database/recettes.db-shm
+database/recettes.db-wal
+
+# Garder la BDD dans le dépôt pour la démo (commenter si non souhaité)
+# database/recettes.db

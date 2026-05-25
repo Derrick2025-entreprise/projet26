@@ -1,0 +1,131 @@
+<% titre = recette.titre; %>
+<%- include('layout/header') %>
+
+<article class="row" aria-labelledby="titre-recette">
+  <div class="col-lg-8 mx-auto">
+
+    <% if (recette.image_url) { %>
+      <figure class="mb-4">
+        <img src="<%= recette.image_url %>"
+             class="img-fluid rounded w-100 recipe-detail-img"
+             alt="Foto della ricetta: <%= recette.titre %>">
+      </figure>
+    <% } %>
+
+    <h1 id="titre-recette" class="mb-1"><%= recette.titre %></h1>
+
+    <div id="notation-resume" class="mb-2">
+      <%- include('partials/etoiles-affichage', {
+        noteMoyenne: recette.note_moyenne,
+        nbNotations: recette.nb_notations
+      }) %>
+    </div>
+
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <p class="text-muted mb-0">
+        Di <strong><%= recette.auteur %></strong> —
+        <time datetime="<%= recette.cree_le %>">
+          <%= new Date(recette.cree_le).toLocaleDateString('it-IT') %>
+        </time>
+      </p>
+      <% if (utilisateur) { %>
+        <button class="btn btn-favori btn-favori-lg"
+                data-recette-id="<%= recette.id %>"
+                aria-label="Aggiungi ai preferiti"
+                aria-pressed="false">
+          🤍
+        </button>
+      <% } %>
+    </div>
+
+    <% if (recette.description) { %>
+      <p class="lead"><%= recette.description %></p>
+    <% } %>
+
+    <hr>
+
+    <section class="notation-section mb-4" aria-labelledby="titre-notation">
+      <h2 id="titre-notation">Valuta questa ricetta</h2>
+      <% if (utilisateur) { %>
+        <div id="widget-notation" data-recette-id="<%= recette.id %>">
+          <p class="text-muted small mb-2">Dai da 1 a 5 stelle e lascia un suggerimento (facoltativo).</p>
+          <div class="etoiles-interactives mb-2" role="group" aria-label="Seleziona il numero di stelle">
+            <% for (let i = 1; i <= 5; i++) { %>
+              <button type="button" class="etoile-btn etoile-vide" data-valeur="<%= i %>"
+                      aria-label="<%= i %> stell<%= i !== 1 ? 'e' : 'a' %>"
+                      aria-pressed="false">☆</button>
+            <% } %>
+          </div>
+          <form id="form-notation">
+            <label for="notation-suggestion" class="form-label">Il tuo suggerimento</label>
+            <textarea id="notation-suggestion" class="form-control mb-2" rows="3"
+                      maxlength="500"
+                      placeholder="Cosa ne pensi di questa ricetta?"></textarea>
+            <button type="submit" class="btn btn-primary btn-sm">Invia valutazione</button>
+          </form>
+          <div id="notation-message" class="alert py-2 small d-none mt-2" role="status"></div>
+        </div>
+      <% } else { %>
+        <p class="text-muted">
+          <a href="/connexion">Accedi</a> per valutare questa ricetta e lasciare un suggerimento.
+        </p>
+      <% } %>
+
+      <h3 class="h5 mt-4">Commenti dei visitatori</h3>
+      <ul id="liste-avis" class="liste-avis list-unstyled">
+        <% if (notations.avis.length === 0) { %>
+          <li class="text-muted small">Nessun commento per il momento.</li>
+        <% } else { %>
+          <% notations.avis.forEach(avis => { %>
+            <li class="avis-item">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <strong><%= avis.auteur %></strong>
+                <span class="avis-etoiles" aria-label="<%= avis.etoiles %> stelle">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <span aria-hidden="true"><%= i <= avis.etoiles ? '★' : '☆' %></span>
+                  <% } %>
+                </span>
+              </div>
+              <time class="text-muted small" datetime="<%= avis.cree_le %>">
+                <%= new Date(avis.cree_le).toLocaleDateString('it-IT') %>
+              </time>
+              <% if (avis.suggestion) { %>
+                <p class="mb-0 mt-1"><%= avis.suggestion %></p>
+              <% } %>
+            </li>
+          <% }); %>
+        <% } %>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section aria-labelledby="titre-ingredients">
+      <h2 id="titre-ingredients">Ingredienti</h2>
+      <pre class="ingredients-list bg-light p-3 rounded"><%= recette.ingredients %></pre>
+    </section>
+
+    <section aria-labelledby="titre-etapes" class="mt-4">
+      <h2 id="titre-etapes">Preparazione</h2>
+      <pre class="steps-list bg-light p-3 rounded"><%= recette.etapes %></pre>
+    </section>
+
+    <% if (utilisateur && Number(utilisateur.id) === Number(recette.utilisateur_id)) { %>
+      <aside class="d-flex gap-2 mt-4" aria-label="Azioni sulla ricetta">
+        <a href="/recettes/<%= recette.id %>/modifier" class="btn btn-warning">Modifica</a>
+        <form method="POST" action="/recettes/<%= recette.id %>/supprimer" id="form-supprimer">
+          <button type="button" class="btn btn-danger" id="btn-supprimer"
+                  data-recette-titre="<%= recette.titre %>">
+            Elimina
+          </button>
+        </form>
+      </aside>
+    <% } %>
+
+    <nav aria-label="Navigazione indietro" class="mt-3">
+      <a href="/" class="btn btn-link ps-0">← Torna alla home</a>
+    </nav>
+  </div>
+</article>
+
+<%- include('layout/footer') %>

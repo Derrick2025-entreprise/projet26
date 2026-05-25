@@ -1,0 +1,26 @@
+<%#
+  Étoiles en bas de carte : notation interactive si connecté, sinon lecture seule.
+  Variables : recetteId, noteMoyenne, nbNotations
+%>
+<div class="etoiles-carte" data-recette-id="<%= recetteId %>">
+  <% if (utilisateur) { %>
+    <div class="etoiles-interactives etoiles-carte-btns" role="group" aria-label="Valuta questa ricetta">
+      <% for (let i = 1; i <= 5; i++) { %>
+        <button type="button" class="etoile-btn etoile-vide" data-valeur="<%= i %>"
+                aria-label="<%= i %> stell<%= i !== 1 ? 'e' : 'a' %>"
+                aria-pressed="false">☆</button>
+      <% } %>
+    </div>
+  <% } else { %>
+    <%- include('partials/etoiles-affichage', {
+      noteMoyenne: noteMoyenne,
+      nbNotations: nbNotations
+    }) %>
+  <% } %>
+  <div class="etoiles-carte-resume text-muted small" aria-live="polite">
+    <% const nb = Number(nbNotations) || 0; %>
+    <% if (nb > 0) { %>
+      <span class="etoiles-meta"><strong><%= Number(noteMoyenne) || 0 %></strong>/5 (<%= nb %>)</span>
+    <% } %>
+  </div>
+</div>

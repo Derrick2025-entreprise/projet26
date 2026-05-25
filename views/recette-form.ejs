@@ -1,0 +1,72 @@
+<% titre = recette && recette.id ? 'Modifica ricetta' : 'Nuova ricetta'; %>
+<%- include('layout/header') %>
+
+<section aria-labelledby="titre-form">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 id="titre-form" class="mb-4"><%= titre %></h1>
+
+      <% if (erreurs && erreurs.length > 0) { %>
+        <div class="alert alert-danger" role="alert" aria-live="polite">
+          <ul class="mb-0">
+            <% erreurs.forEach(e => { %><li><%= e %></li><% }); %>
+          </ul>
+        </div>
+      <% } %>
+
+      <form method="POST"
+            action="<%= recette && recette.id ? '/recettes/' + recette.id + '/modifier' : '/recettes' %>"
+            novalidate>
+
+        <div class="mb-3">
+          <label for="titre-input" class="form-label">
+            Titolo <abbr title="campo obbligatorio" aria-label="obbligatorio">*</abbr>
+          </label>
+          <input type="text" class="form-control" id="titre-input" name="titre"
+                 value="<%= recette ? recette.titre : '' %>" required
+                 aria-required="true">
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Descrizione</label>
+          <textarea class="form-control" id="description" name="description"
+                    rows="2"><%= recette ? recette.description : '' %></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="ingredients" class="form-label">
+            Ingredienti <abbr title="campo obbligatorio" aria-label="obbligatorio">*</abbr>
+          </label>
+          <textarea class="form-control" id="ingredients" name="ingredients" rows="5"
+                    placeholder="Un ingrediente per riga" required
+                    aria-required="true"><%= recette ? recette.ingredients : '' %></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="etapes" class="form-label">
+            Preparazione <abbr title="campo obbligatorio" aria-label="obbligatorio">*</abbr>
+          </label>
+          <textarea class="form-control" id="etapes" name="etapes" rows="7"
+                    placeholder="Un passaggio per riga" required
+                    aria-required="true"><%= recette ? recette.etapes : '' %></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="image_url" class="form-label">URL immagine <span class="text-muted">(facoltativo)</span></label>
+          <input type="url" class="form-control" id="image_url" name="image_url"
+                 value="<%= recette && recette.image_url ? recette.image_url : '' %>">
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary">
+            <%= recette && recette.id ? 'Salva modifiche' : 'Pubblica ricetta' %>
+          </button>
+          <a href="<%= recette && recette.id ? '/recettes/' + recette.id : '/' %>"
+             class="btn btn-outline-secondary">Annulla</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<%- include('layout/footer') %>

@@ -1,0 +1,62 @@
+<% titre = "I miei preferiti"; %>
+<%- include('layout/header') %>
+
+<section aria-labelledby="titre-favoris">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 id="titre-favoris">❤️ Le mie ricette preferite</h1>
+    <a href="/" class="btn btn-outline-secondary btn-sm">← Tutte le ricette</a>
+  </div>
+
+  <% if (favoris.length === 0) { %>
+    <div class="text-center py-5 text-muted">
+      <p class="fs-1 mb-2">🤍</p>
+      <p class="fs-5">Non hai ancora ricette preferite.</p>
+      <p>Clicca sul cuore ❤️ su qualsiasi ricetta per aggiungerla qui.</p>
+      <a href="/" class="btn btn-primary mt-2">Sfoglia le ricette</a>
+    </div>
+  <% } else { %>
+    <p class="text-muted mb-4"><%= favoris.length %> ricett<%= favoris.length > 1 ? 'e' : 'a' %> preferit<%= favoris.length > 1 ? 'e' : 'a' %></p>
+    <ol class="row row-cols-1 row-cols-md-3 g-4 list-unstyled">
+      <% favoris.forEach(recette => { %>
+        <li class="col">
+          <article class="card h-100 card-favori">
+            <% if (recette.image_url) { %>
+              <img src="<%= recette.image_url %>" class="card-img-top" alt="Foto di <%= recette.titre %>">
+            <% } else { %>
+              <div class="recipe-placeholder" aria-hidden="true">🍴</div>
+            <% } %>
+            <div class="card-body">
+              <h2 class="card-title h5"><%= recette.titre %></h2>
+              <p class="card-text text-muted small mb-1">Di <strong><%= recette.auteur %></strong></p>
+              <% if (recette.description) { %>
+                <p class="card-text">
+                  <%= recette.description.substring(0, 100) %><%= recette.description.length > 100 ? '…' : '' %>
+                </p>
+              <% } %>
+            </div>
+            <div class="card-footer card-footer-recette">
+              <%- include('partials/etoiles-carte', {
+                recetteId: recette.id,
+                noteMoyenne: recette.note_moyenne,
+                nbNotations: recette.nb_notations
+              }) %>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <a href="/recettes/<%= recette.id %>" class="btn btn-outline-primary btn-sm">
+                  Vedi la ricetta
+                </a>
+                <button type="button" class="btn btn-favori btn-favori-actif"
+                        data-recette-id="<%= recette.id %>"
+                        aria-label="Rimuovi dai preferiti"
+                        aria-pressed="true">
+                  ❤️
+                </button>
+              </div>
+            </div>
+          </article>
+        </li>
+      <% }); %>
+    </ol>
+  <% } %>
+</section>
+
+<%- include('layout/footer') %>
