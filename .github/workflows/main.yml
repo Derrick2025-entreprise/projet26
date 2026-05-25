@@ -77,14 +77,14 @@ jobs:
     - name: Login Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     
     - name: Extraction des métadonnées
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ${{ secrets.DOCKER_USERNAME }}/recettes-france
+        images: ${{ secrets.DOCKERHUB_USERNAME }}/recettes-france
         tags: |
           type=ref,event=branch
           type=sha,prefix={{branch}}-
@@ -98,8 +98,8 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/recettes-france:buildcache
-        cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/recettes-france:buildcache,mode=max
+        cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/recettes-france:buildcache
+        cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/recettes-france:buildcache,mode=max
 
   # Job 3: Scan de sécurité
   security:
